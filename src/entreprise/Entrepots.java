@@ -1,4 +1,4 @@
-package database;
+package entreprise;
 
 public class Entrepots {
 	private Sites id_entrepot;

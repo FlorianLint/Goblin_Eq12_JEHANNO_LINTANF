@@ -1,4 +1,4 @@
-package database;
+package entreprise;
 
 import com.opencsv.bean.CsvBindByName;
 

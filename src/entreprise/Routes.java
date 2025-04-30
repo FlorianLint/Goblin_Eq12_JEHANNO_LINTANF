@@ -1,4 +1,4 @@
-package database;
+package entreprise;
 
 public class Routes {
 	private Sites origine;
