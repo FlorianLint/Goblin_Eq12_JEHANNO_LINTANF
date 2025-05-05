@@ -7,27 +7,27 @@ import java.util.List;
 
 public class Entreprise{
 	private List<Client> client;
-	private List<Entrepots> entrepot;
-	private List<Routes> route;
-	private List<Sites> site;
+	private List<Entrepot> entrepot;
+	private List<Route> route;
+	private List<Site> site;
 
 	public Entreprise() {
 		this.client = new ArrayList<Client>();
-		this.entrepot = new ArrayList<Entrepots>();
-		this.route = new ArrayList<Routes>();
-		this.site = new ArrayList<Sites>();
+		this.entrepot = new ArrayList<Entrepot>();
+		this.route = new ArrayList<Route>();
+		this.site = new ArrayList<Site>();
 	}
 
 	public List<Client> getClient() {
 		return client;
 	}
-	public List<Entrepots> getEntrepot() {
+	public List<Entrepot> getEntrepot() {
 		return entrepot;
 	}
-	public List<Routes> getRoute() {
+	public List<Route> getRoute() {
 		return route;
 	}
-	public List<Sites> getSite() {
+	public List<Site> getSite() {
 		return site;
 	}
 
