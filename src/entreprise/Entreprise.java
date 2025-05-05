@@ -1,49 +1,18 @@
 package entreprise;
 
-import com.opencsv.*;
-import java.io.FileReader;
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
-public class Entreprise{
-	private List<Client> client;
-	private List<Entrepot> entrepot;
-	private List<Route> route;
-	private List<Site> site;
+public class Entreprise {
+    public static void main(String[] args) throws Exception {
+        List<Client> clients = CsvUtils.readCsv("Jeux_de_donnees"+File.separator+"petit/init-clients-30-10-Carre.csv", Client.class);
+        List<Entrepot> entrepots = CsvUtils.readCsv("Jeux_de_donnees/petit/init-entrepots-30-5-Carre.csv", Entrepot.class);
+        List<Route> routes = CsvUtils.readCsv("Jeux_de_donnees/petit/init-routes-30-45-Carre.csv", Route.class);
+        List<Site> sites = CsvUtils.readCsv("Jeux_de_donnees/petit/init-sites-30-Carre.csv", Site.class);
 
-	public Entreprise() {
-		this.client = new ArrayList<Client>();
-		this.entrepot = new ArrayList<Entrepot>();
-		this.route = new ArrayList<Route>();
-		this.site = new ArrayList<Site>();
-	}
-
-	public List<Client> getClient() {
-		return client;
-	}
-	public List<Entrepot> getEntrepot() {
-		return entrepot;
-	}
-	public List<Route> getRoute() {
-		return route;
-	}
-	public List<Site> getSite() {
-		return site;
-	}
-
-	public void chargerClients(){
-		try {
-			CSVReader reader = new CSVReaderBuilder(new FileReader("Jeux_de_donnees/petit/init-clients-30-10-Carre.csv")) // Lire le CSV
-					.withCSVParser(new CSVParserBuilder().withSeparator(';').build()) // Prendre ";" comme séparateur dans le CSV
-					.build();
-			String[] line; // Variable pour stocker chaque ligne lue du CSV
-			reader.readNext(); // Pour ne par lire la première ligne
-			while ((line = reader.readNext()) != null) {
-
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        // Exemple d'affichage
+        for (Client c : clients) {
+            System.out.println(c.getId_site());
+        }
+    }
 }

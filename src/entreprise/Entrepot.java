@@ -4,24 +4,24 @@ import com.opencsv.bean.CsvBindByName;
 
 public class Entrepot {
 	@CsvBindByName(column = "id entrepot")
-	private Site id_entrepot;
+	private int id_entrepot;
 	@CsvBindByName(column = "id site")
-	private Site id_site;
+	private int id_site;
 	@CsvBindByName(column = "cout fixe")
 	private int cout_fixe;
 	@CsvBindByName(column = "stock")
 	private int stock;
-	
-	public Site getId_entrepot() {
+
+	public int getId_entrepot() {
 		return id_entrepot;
 	}
-	public void setId_entrepot(Site id_entrepot) {
+	public void setId_entrepot(int id_entrepot) {
 		this.id_entrepot = id_entrepot;
 	}
-	public Site getId_site() {
+	public int getId_site() {
 		return id_site;
 	}
-	public void setId_site(Site id_site) {
+	public void setId_site(int id_site) {
 		this.id_site = id_site;
 	}
 	public int getCout_fixe() {
@@ -35,5 +35,5 @@ public class Entrepot {
 	}
 	public void setStock(int stock) {
 		this.stock = stock;
-	}
+	}	
 }
