@@ -38,9 +38,6 @@ public class Entreprise {
 		e.BaseDonnees();
 	}
 
-	public double distance (int site1, int site2) {
-		
-	}
 	public void BaseDonnees() throws Exception {
 		Class.forName("org.hsqldb.jdbcDriver");
 
@@ -76,19 +73,21 @@ public class Entreprise {
 			requeteRoute = "CREATE TABLE route ("
 					+"origine int,"
 					+"destination int,"
+					+"distance int,"
 					+"PRIMARY KEY(origine))";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteRoute );
 			}
-			StringBuffer sRoute = new StringBuffer ("INSERT INTO route (origine, destination) VALUES");
+			StringBuffer sRoute = new StringBuffer ("INSERT INTO route (origine, destination, distance) VALUES");
 			for (int i = 0; i<this.routes.size(); i++) {
 				Route route = this.routes.get(i);
 				sRoute.append("("+ route.getOrigine() +",");
-				sRoute.append(route.getDestination() +")");
+				sRoute.append(route.getDestination() +",");
+				sRoute.append(route.getDistance() +")");
 			}
 
 			try ( Statement statement = connection.createStatement() ) {
-				try ( ResultSet resultSet = statement.executeQuery( requete ) ) {
+				try ( ResultSet resultSet = statement.executeQuery( requeteRoute ) ) {
 					while( resultSet.next() ) {
 						int origine = resultSet.getInt("origine");
 						int destination = resultSet.getInt("destination");

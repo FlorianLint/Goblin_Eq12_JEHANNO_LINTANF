@@ -4,16 +4,16 @@ import com.opencsv.bean.CsvBindByName;
 
 public class Client {
 	@CsvBindByName(column = "id site")
-	private int id_site;
+	private Site id_site;
 	@CsvBindByName(column = "mail")
 	private String mail;
 	@CsvBindByName(column = "nom")
 	private String nom;
 	
-	public int getId_site() {
+	public Site getId_site() {
 		return id_site;
 	}
-	public void setId_site(int id_site) {
+	public void setId_site(Site id_site) {
 		this.id_site = id_site;
 	}
 	public String getMail() {
