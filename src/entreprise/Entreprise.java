@@ -3,7 +3,6 @@ package entreprise;
 import java.io.File;
 import java.sql.*;
 import java.util.List;
-import java.util.Set;
 
 public class Entreprise {
 	List<Client> clients;
@@ -11,33 +10,49 @@ public class Entreprise {
 	List<Route> routes;
 	List<Site> sites ;
 	public Entreprise(String dossier) {
+		String nomFichier = "";
 		try {
 			File f = new File("Jeux_de_donnees"+File.separator+dossier);
+					System.out.println(f.listFiles().length);
 			for (File ff :f.listFiles()) {
+				nomFichier = ff.getName();					
 				if (ff.getAbsolutePath().contains("client")) {
 					//	System.out.println(ff.getAbsolutePath()); // Optionel pour voir le chemin du fichier
 					this.clients = CsvUtils.readCsv(ff.getAbsolutePath(), Client.class);
+					System.out.println("client fini"); // optionnel
 				}else if(ff.getAbsolutePath().contains("entrepot")) {
 					this.entrepots = CsvUtils.readCsv(ff.getAbsolutePath(), Entrepot.class);
+					System.out.println("entrepot fini");// optionnel
 				}else if(ff.getAbsolutePath().contains("route")) {
 					this.routes = CsvUtils.readCsv(ff.getAbsolutePath(), Route.class);
+					System.out.println("route fini");// optionnel
 				}else if(ff.getAbsolutePath().contains("site")) {
 					this.sites = CsvUtils.readCsv(ff.getAbsolutePath(), Site.class);
+					System.out.println("site fini");// optionnel
 				}
 			}
 		} catch (Exception e) {
+			System.out.println("non fichier"+ nomFichier);
 			System.err.println(e);
 		}
 		//test affichage list
-		//				for (Client c : clients) {
-		//					System.out.println(c.getId_site());
-		//				}
+						for (Client c : clients) {
+							System.out.println(c.getId_site());
+						}
 	}
 	public static void main(String[] args) throws Exception {
 		Entreprise e = new Entreprise("petit");
+		System.out.println("taille e :" +e.sites.size());
 		e.BaseDonnees();
 	}
 
+	public Site findSiteFromId(int id_site, List<Site> sites) {
+		Site siteId;
+		for(int i = 0; i < this.sites.size(); i++) {
+			
+		}
+		return siteId;
+	}
 	public void BaseDonnees() throws Exception {
 		Class.forName("org.hsqldb.jdbcDriver");
 

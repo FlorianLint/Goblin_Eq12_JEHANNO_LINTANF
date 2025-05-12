@@ -4,9 +4,9 @@ import com.opencsv.bean.CsvBindByName;
 
 public class Route {
 	@CsvBindByName(column = "origine")
-	private Site origine;
+	private int origine;
 	@CsvBindByName(column = "destination")
-	private Site destination;
+	private int destination;
 	private double distance;
 	
 	public double distance(Site site1, Site site2) {
@@ -21,16 +21,16 @@ public class Route {
 		this.distance = distance;
 	}
 
-	public Site getOrigine() {
+	public int getOrigine() {
 		return origine;
 	}
-	public void setOrigine(Site origine) {
+	public void setOrigine(int origine) {
 		this.origine = origine;
 	}
-	public Site getDestination() {
+	public int getDestination() {
 		return destination;
 	}
-	public void setDestination(Site destination) {
+	public void setDestination(int destination) {
 		this.destination = destination;
 	}
 }
