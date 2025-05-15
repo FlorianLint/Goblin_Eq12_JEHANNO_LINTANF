@@ -103,8 +103,11 @@ public class Entreprise {
 			StringBuffer sRoute = new StringBuffer ("INSERT INTO route (origine, destination, distance) VALUES");
 			for (int i = 0; i<this.routes.size(); i++) {
 				Route route = this.routes.get(i);
+				Site origine = findSiteFromId(route.getOrigine(), this.sites);
+				Site destination = findSiteFromId(route.getDestination(), this.sites);
 				sRoute.append("("+ route.getOrigine() +",");
 				sRoute.append(route.getDestination() +")");
+				sRoute.append(this.distance(origine, destination));
 			}
 
 			try ( Statement statement = connection.createStatement() ) {
