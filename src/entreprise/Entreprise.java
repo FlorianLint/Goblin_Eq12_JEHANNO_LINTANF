@@ -47,12 +47,14 @@ public class Entreprise {
 	}
 
 	public Site findSiteFromId(int id_site, List<Site> sites) {
-		Site siteId;
-		for(int i = 0; i < this.sites.size(); i++) {
-			
-		}
-		return siteId;
+	    for (int i = 0; i < sites.size(); i++) {
+	        if (sites.get(i).getId_site() == id_site) {
+	            return sites.get(i);
+	        }
+	    }
+	    return null;
 	}
+
 	public void BaseDonnees() throws Exception {
 		Class.forName("org.hsqldb.jdbcDriver");
 
@@ -97,8 +99,7 @@ public class Entreprise {
 			for (int i = 0; i<this.routes.size(); i++) {
 				Route route = this.routes.get(i);
 				sRoute.append("("+ route.getOrigine() +",");
-				sRoute.append(route.getDestination() +",");
-				sRoute.append(route.getDistance() +")");
+				sRoute.append(route.getDestination() +")");
 			}
 
 			try ( Statement statement = connection.createStatement() ) {
