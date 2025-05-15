@@ -54,6 +54,11 @@ public class Entreprise {
 	    }
 	    return null;
 	}
+	
+	public int distance(Site site1, Site site2) {
+	    double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
+	    return (int) Math.ceil(dist);
+	}
 
 	public void BaseDonnees() throws Exception {
 		Class.forName("org.hsqldb.jdbcDriver");
