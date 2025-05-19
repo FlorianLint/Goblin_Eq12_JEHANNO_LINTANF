@@ -64,27 +64,6 @@ public class Entreprise {
 	    return (int) Math.ceil(dist);
 	   
 	}
-	
-	public int calculdistance(int i, int j) {
-		
-		Class.forName("org.hsqldb.jdbcDriver");
-
-		String url = "jdbc:hsqldb:file:database"+File.separator+"basic;shutdown=true";
-		String login = "sa";
-		String password = "";
-		try (Connection connection=DriverManager.getConnection(url, login, password )) {
-		/*
-		String requetedistance = "DROP TABLE site IF EXISTS;";
-		try ( Statement statement = connection.createStatement() ) {
-			statement.executeUpdate( requetedistance );
-		}*/
-//		String requetedistance = "SELECT destination FROM route,"
-//				+"WHERE origine="+ i + "AND destination=" + j;
-//		if (requetedistance != null ) {
-//		return distance(findSiteFromId(i,sites),findSiteFromId(j,sites));
-//		}
-//		else {E
-	}
 
 	public void BaseDonnees() throws Exception {
 		Class.forName("org.hsqldb.jdbcDriver");
@@ -114,6 +93,49 @@ public class Entreprise {
 				sSite.append(site.getY() +")");
 			}
 
+			String requeteClient = "DROP TABLE client IF EXISTS;";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate( requeteClient );
+			}
+			requeteClient = "CREATE TABLE client ("
+					+"id_site int,"
+					+"mail VARCHAR(100),"
+					+"nom VARCHAR(100),"
+					+"PRIMARY KEY(mail))";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate( requeteClient );
+			}
+			StringBuffer sClient = new StringBuffer ("INSERT INTO client (id_site, mail, nom) VALUES");
+			for (int i = 0; i<this.clients.size(); i++) {
+				Client client = this.clients.get(i);
+				sClient.append("("+ client.getId_site() +",");
+				sClient.append(client.getMail() +",");
+				sClient.append(client.getNom() +")");
+			}
+			
+			
+			String requeteEntrepot = "DROP TABLE entrepot IF EXISTS;";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate( requeteEntrepot );
+			}
+			requeteClient = "CREATE TABLE entrepot ("
+					+"id_entrepot int,"
+					+"id_site int,"
+					+"cout_fixe int,"
+					+"stock int,"
+					+"PRIMARY KEY(id_entrepot))";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate( requeteEntrepot );
+			}
+			StringBuffer sEntrepot = new StringBuffer ("INSERT INTO entrepot (id_entrepot, id_site, cout_fixe, stock) VALUES");
+			for (int i = 0; i<this.entrepots.size(); i++) {
+				Entrepot entrepot = this.entrepots.get(i);
+				sEntrepot.append("("+ entrepot.getId_entrepot() +",");
+				sEntrepot.append(entrepot.getId_site() +",");
+				sEntrepot.append(entrepot.getCout_fixe() +",");
+				sEntrepot.append(entrepot.getStock() +")");
+			}
+			
 			String requeteRoute = "DROP TABLE route IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteRoute );
@@ -121,19 +143,15 @@ public class Entreprise {
 			requeteRoute = "CREATE TABLE route ("
 					+"origine int,"
 					+"destination int,"
-					+"distance int,"
-					+"PRIMARY KEY(origine))";
+					+"PRIMARY KEY(origine, destination))";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteRoute );
 			}
-			StringBuffer sRoute = new StringBuffer ("INSERT INTO route (origine, destination, distance) VALUES");
+			StringBuffer sRoute = new StringBuffer ("INSERT INTO route (origine, destination) VALUES");
 			for (int i = 0; i<this.routes.size(); i++) {
 				Route route = this.routes.get(i);
-				Site origine = findSiteFromId(route.getOrigine(), this.sites);
-				Site destination = findSiteFromId(route.getDestination(), this.sites);
 				sRoute.append("("+ route.getOrigine() +",");
 				sRoute.append(route.getDestination() +")");
-				sRoute.append(this.distance(origine, destination));
 			}
 
 			try ( Statement statement = connection.createStatement() ) {
@@ -141,10 +159,9 @@ public class Entreprise {
 					while( resultSet.next() ) {
 						int origine = resultSet.getInt("origine");
 						int destination = resultSet.getInt("destination");
-						double distance = resultSet.getDouble("distance");
 
-						System.out.println(String.format("Origine: %-5d | Destination: %-5d | Distance: %.2f", 
-								origine, destination, distance));
+						System.out.println(String.format("Origine: %-5d | Destination: %-5d ", 
+								origine, destination));
 					}
 				}
 			}
@@ -152,8 +169,9 @@ public class Entreprise {
 	}
 
 
-		public static int[][] Floyd(int n, int[][] cout, Set<Route> r) {
+		public int[][] Floyd() {
 			final int INF = Integer.MAX_VALUE / 2;
+			int n = sites.size();
 			int[][] M = new int[n][n];
 	
 			//initialisation
@@ -167,6 +185,27 @@ public class Entreprise {
 				}
 			}
 			//Remplir la matrice
-			
-			
+			for (Route routes : routes) {
+				int origine = routes.getOrigine();
+				int destination = routes.getDestination();
+				
+				int distance = distance(findSiteFromId(origine, sites), findSiteFromId(destination, sites));
+				M[origine][destination] = distance;
+				M[destination][origine] = distance;
+			}
+
+
+			int k = 0;
+			for (k=0; k<n; k++); {
+				for (int i = 0; i < n; i++) {
+					for (int j = 0; j < n; j++) {
+						if (M[i][k] + M[k][j] < M[i][j]) {
+							M[i][j] = M[i][k] + M[k][j];
+						}
+					}
+				}
+			}
+
+			return M; 
+		}
 }
