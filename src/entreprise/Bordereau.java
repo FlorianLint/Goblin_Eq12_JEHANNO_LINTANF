@@ -10,5 +10,10 @@ public class Bordereau {
 	
 	public Bordereau(Entreprise e, String fictxt) {
 		
+		
+		
+		for(int i = 0; i <n; i++) {
+			
+		}
 	}
 }
