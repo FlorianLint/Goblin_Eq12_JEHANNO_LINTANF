@@ -9,6 +9,10 @@ public class Entreprise {
 	List<Entrepot> entrepots;
 	List<Route> routes;
 	List<Site> sites ;
+	
+	public Entreprise() {
+		
+	}
 	public Entreprise(String dossier) {
 		String nomFichier = "";
 		try {
@@ -58,6 +62,28 @@ public class Entreprise {
 	public int distance(Site site1, Site site2) {
 	    double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
 	    return (int) Math.ceil(dist);
+	   
+	}
+	
+	public int calculdistance(int i, int j) {
+		
+		Class.forName("org.hsqldb.jdbcDriver");
+
+		String url = "jdbc:hsqldb:file:database"+File.separator+"basic;shutdown=true";
+		String login = "sa";
+		String password = "";
+		try (Connection connection=DriverManager.getConnection(url, login, password )) {
+		/*
+		String requetedistance = "DROP TABLE site IF EXISTS;";
+		try ( Statement statement = connection.createStatement() ) {
+			statement.executeUpdate( requetedistance );
+		}*/
+//		String requetedistance = "SELECT destination FROM route,"
+//				+"WHERE origine="+ i + "AND destination=" + j;
+//		if (requetedistance != null ) {
+//		return distance(findSiteFromId(i,sites),findSiteFromId(j,sites));
+//		}
+//		else {E
 	}
 
 	public void BaseDonnees() throws Exception {
@@ -126,21 +152,21 @@ public class Entreprise {
 	}
 
 
-	//	public static int[][] Floyd(int n, int[][] cout, Set<Route> r) {
-	//		final int INF = Integer.MAX_VALUE / 2;
-	//		int[][] M = new int[n][n];
-	//
-	//		//initialisation
-	//		for (int i = 0; i < n; i++) {
-	//			for (int j = 0; j < n; j++) {
-	//				if (i == j) {
-	//					M[i][j] = 0;
-	//				} else {
-	//					M[i][j] = INF;
-	//				}
-	//			}
-	//		}
-	//		//Remplir la matrice
-	//
-	//	}
+		public static int[][] Floyd(int n, int[][] cout, Set<Route> r) {
+			final int INF = Integer.MAX_VALUE / 2;
+			int[][] M = new int[n][n];
+	
+			//initialisation
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					if (i == j) {
+						M[i][j] = 0;
+					} else {
+						M[i][j] = INF;
+					}
+				}
+			}
+			//Remplir la matrice
+			
+			
 }
