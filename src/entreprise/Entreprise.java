@@ -8,16 +8,15 @@ public class Entreprise {
 	List<Client> clients;
 	List<Entrepot> entrepots;
 	List<Route> routes;
-	List<Site> sites ;
-	
-	public Entreprise() {
-		
-	}
+	List<Site> sites;
+	private String dossier;
+
 	public Entreprise(String dossier) {
+		this.dossier = dossier;
 		String nomFichier = "";
 		try {
 			File f = new File("Jeux_de_donnees"+File.separator+dossier);
-					System.out.println(f.listFiles().length);
+			System.out.println(f.listFiles().length);
 			for (File ff :f.listFiles()) {
 				nomFichier = ff.getName();					
 				if (ff.getAbsolutePath().contains("client")) {
@@ -36,14 +35,18 @@ public class Entreprise {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("non fichier"+ nomFichier);
+			System.out.println("nom fichier"+ nomFichier);
 			System.err.println(e);
 		}
 		//test affichage list
-						for (Client c : clients) {
-							System.out.println(c.getId_site());
-						}
+		for (Client c : clients) {
+			System.out.println(c.getId_site());
+		}
 	}
+	public String getDossier() {
+		return dossier;
+	}
+
 	public static void main(String[] args) throws Exception {
 		Entreprise e = new Entreprise("petit");
 		System.out.println("taille e :" +e.sites.size());
@@ -51,18 +54,17 @@ public class Entreprise {
 	}
 
 	public Site findSiteFromId(int id_site, List<Site> sites) {
-	    for (int i = 0; i < sites.size(); i++) {
-	        if (sites.get(i).getId_site() == id_site) {
-	            return sites.get(i);
-	        }
-	    }
-	    return null;
+		for (int i = 0; i < sites.size(); i++) {
+			if (sites.get(i).getId_site() == id_site) {
+				return sites.get(i);
+			}
+		}
+		return null;
 	}
-	
+
 	public int distance(Site site1, Site site2) {
-	    double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
-	    return (int) Math.ceil(dist);
-	   
+		double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
+		return (int) Math.ceil(dist);
 	}
 
 	public void BaseDonnees() throws Exception {
@@ -112,8 +114,7 @@ public class Entreprise {
 				sClient.append(client.getMail() +",");
 				sClient.append(client.getNom() +")");
 			}
-			
-			
+
 			String requeteEntrepot = "DROP TABLE entrepot IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteEntrepot );
@@ -135,7 +136,7 @@ public class Entreprise {
 				sEntrepot.append(entrepot.getCout_fixe() +",");
 				sEntrepot.append(entrepot.getStock() +")");
 			}
-			
+
 			String requeteRoute = "DROP TABLE route IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteRoute );
@@ -168,44 +169,40 @@ public class Entreprise {
 		}
 	}
 
+	public int[][] Floyd() {
+		final int INF = Integer.MAX_VALUE / 2;
+		int n = sites.size();
+		int[][] M = new int[n][n];
+		//initialisation
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i == j) {
+					M[i][j] = 0;
+				} else {
+					M[i][j] = INF;
+				}
+			}
+		}
+		//Remplir la matrice
+		for (Route routes : routes) {
+			int origine = routes.getOrigine();
+			int destination = routes.getDestination();
 
-		public int[][] Floyd() {
-			final int INF = Integer.MAX_VALUE / 2;
-			int n = sites.size();
-			int[][] M = new int[n][n];
-	
-			//initialisation
+			int distance = distance(findSiteFromId(origine, sites), findSiteFromId(destination, sites));
+			M[origine][destination] = distance;
+			M[destination][origine] = distance;
+		}
+		//Déroulement de l'algorithme
+		int k = 0;
+		for (k=0; k<n; k++); {
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
-					if (i == j) {
-						M[i][j] = 0;
-					} else {
-						M[i][j] = INF;
+					if (M[i][k] + M[k][j] < M[i][j]) {
+						M[i][j] = M[i][k] + M[k][j];
 					}
 				}
 			}
-			//Remplir la matrice
-			for (Route routes : routes) {
-				int origine = routes.getOrigine();
-				int destination = routes.getDestination();
-				
-				int distance = distance(findSiteFromId(origine, sites), findSiteFromId(destination, sites));
-				M[origine][destination] = distance;
-				M[destination][origine] = distance;
-			}
-
-
-			int k = 0;
-			for (k=0; k<n; k++); {
-				for (int i = 0; i < n; i++) {
-					for (int j = 0; j < n; j++) {
-						if (M[i][k] + M[k][j] < M[i][j]) {
-							M[i][j] = M[i][k] + M[k][j];
-						}
-					}
-				}
-			}
-
-			return M; 
 		}
+		return M; 
+	}
 }
