@@ -5,12 +5,16 @@ import java.sql.*;
 import java.util.List;
 
 public class Entreprise {
-	List<Client> clients;
-	List<Entrepot> entrepots;
-	List<Route> routes;
-	List<Site> sites;
+	private List<Client> clients;
+	private List<Entrepot> entrepots;
+	private List<Route> routes;
+	private List<Site> sites;
 	private String dossier;
+	private int[][] distancesMin;
 
+	public Entreprise() {//lecture de la BD pour initialiser les variables d'instances
+		
+	}
 	public Entreprise(String dossier) {
 		this.dossier = dossier;
 		String nomFichier = "";
@@ -42,16 +46,17 @@ public class Entreprise {
 		for (Client c : clients) {
 			System.out.println(c.getId_site());
 		}
+		this.distancesMin = Floyd();
 	}
 	public String getDossier() {
 		return dossier;
 	}
 
-	public static void main(String[] args) throws Exception {
-		Entreprise e = new Entreprise("petit");
-		System.out.println("taille e :" +e.sites.size());
-		e.BaseDonnees();
-	}
+//	public static void main(String[] args) throws Exception {
+//		Entreprise e = new Entreprise("petit");
+//		System.out.println("taille e :" +e.sites.size());
+//		e.BaseDonnees();
+//	}
 
 	public Site findSiteFromId(int id_site, List<Site> sites) {
 		for (int i = 0; i < sites.size(); i++) {
@@ -165,6 +170,25 @@ public class Entreprise {
 								origine, destination));
 					}
 				}
+			}
+			String requeteFloydW = "DROP TABLE FloydW IF EXISTS;";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate( requeteFloydW );
+			}
+			requeteFloydW = "CREATE TABLE FloydW ("
+					+"origine int,"
+					+"destination int,"
+					+"distance int,"
+					+"PRIMARY KEY(rigine, destination))";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate( requeteFloydW );
+				
+			StringBuffer sFloydW = new StringBuffer ("INSERT INTO FloydW (origine, destination, distance) VALUES");
+			for (int i = 0; i<this.distancesMin.length; i++) {
+				for (int j = 0; j<this.distancesMin.length; j++) {
+				sFloydW.append("("+ i + "," + j + ","  + distancesMin[i][j] +")");
+			}
+			}
 			}
 		}
 	}
