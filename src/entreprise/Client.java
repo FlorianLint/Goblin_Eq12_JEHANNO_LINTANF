@@ -10,6 +10,12 @@ public class Client {
 	@CsvBindByName(column = "nom")
 	private String nom;
 	
+	public Client(int id_site, String mail, String nom) {
+		this.id_site = id_site;
+		this.mail = mail;
+		this.nom = nom;
+	}
+	
 	public int getId_site() {
 		return id_site;
 	}

@@ -51,7 +51,7 @@ public class Bordereau {
 	public void toJson() {
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/nom_de_ta_base", "utilisateur", "mot_de_passe");
+			conn = DriverManager.getConnection("jdbc:hsqldb:file:database"+File.separator+"basic", "sa", "");
 
 			JsonExport json = new JsonExport();
 			json.capacity_facility = new ArrayList<>();

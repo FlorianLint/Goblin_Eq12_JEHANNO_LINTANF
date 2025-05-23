@@ -12,7 +12,6 @@ public class Migration {
 	            dossier = scanner.nextLine().trim().toLowerCase();
 	        }
 	Entreprise e = new Entreprise(dossier);
-	
      try {
          e.BaseDonnees();
      } catch (Exception ex) {
@@ -21,5 +20,3 @@ public class Migration {
 	scanner.close(); 
 	}
 }
-
-//appelle floyd

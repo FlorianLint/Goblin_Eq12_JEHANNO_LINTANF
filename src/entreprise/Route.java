@@ -8,6 +8,11 @@ public class Route {
 	@CsvBindByName(column = "destination")
 	private int destination;
 
+	public Route(int origine, int destination) {
+		this.origine = origine;
+		this.destination = destination;
+	}
+	
 	public int getOrigine() {
 		return origine;
 	}
