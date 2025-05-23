@@ -52,12 +52,6 @@ public class Entreprise {
 		return dossier;
 	}
 
-//	public static void main(String[] args) throws Exception {
-//		Entreprise e = new Entreprise("petit");
-//		System.out.println("taille e :" +e.sites.size());
-//		e.BaseDonnees();
-//	}
-
 	public Site findSiteFromId(int id_site, List<Site> sites) {
 		for (int i = 0; i < sites.size(); i++) {
 			if (sites.get(i).getId_site() == id_site) {

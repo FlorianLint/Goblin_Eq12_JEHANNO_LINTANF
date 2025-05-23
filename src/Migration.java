@@ -13,7 +13,6 @@ public class Migration {
 	        }
 	Entreprise e = new Entreprise(dossier);
 	
-
      try {
          e.BaseDonnees();
      } catch (Exception ex) {
