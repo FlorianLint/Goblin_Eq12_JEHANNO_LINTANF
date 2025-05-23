@@ -103,9 +103,9 @@ public class Entreprise {
 			System.err.println(e);
 		}
 		//test affichage list
-		for (Route r : routes) {
-			System.out.println(r.getDestination());
-		}
+//		for (Route r : routes) {
+//			System.out.println(r.getDestination());
+//		}
 		this.distancesMin = Floyd();
 	}
 
@@ -135,6 +135,14 @@ public class Entreprise {
 				sSite.append("("+ site.getId_site() +",");
 				sSite.append(site.getX() +",");
 				sSite.append(site.getY() +")");
+				if (i != this.sites.size()-1) { 
+					sSite.append(",");
+				}
+			}
+			String requeteSiteInsert = "";
+			requeteSiteInsert = sSite.toString();
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(requeteSiteInsert);
 			}
 
 			String requeteClient = "DROP TABLE client IF EXISTS;";
@@ -155,6 +163,14 @@ public class Entreprise {
 				sClient.append("("+ client.getId_site() +",");
 				sClient.append(client.getMail() +",");
 				sClient.append(client.getNom() +")");
+				if (i != this.clients.size()-1) { 
+					sClient.append(",");
+				}
+			}
+			String requeteClientInsert = "";
+			requeteClientInsert = sClient.toString();
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(requeteClientInsert);
 			}
 
 			String requeteEntrepot = "DROP TABLE entrepot IF EXISTS;";
@@ -177,6 +193,14 @@ public class Entreprise {
 				sEntrepot.append(entrepot.getId_site() +",");
 				sEntrepot.append(entrepot.getCout_fixe() +",");
 				sEntrepot.append(entrepot.getStock() +")");
+				if (i != this.entrepots.size()-1) { 
+					sEntrepot.append(",");
+				}
+			}
+			String requeteEntrepotInsert = "";
+			requeteEntrepotInsert = sEntrepot.toString();
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(requeteEntrepotInsert);
 			}
 
 			String requeteRoute = "DROP TABLE route IF EXISTS;";
@@ -195,11 +219,22 @@ public class Entreprise {
 				Route route = this.routes.get(i);
 				sRoute.append("("+ route.getOrigine() +",");
 				sRoute.append(route.getDestination() +")");
+				if (i != this.routes.size()-1) { 
+					sRoute.append(",");
+				}
 			}
-
+			String requeteRouteInsert = "";
+			requeteRouteInsert = sRoute.toString();
 			try ( Statement statement = connection.createStatement() ) {
-				try ( ResultSet resultSet = statement.executeQuery( requeteRoute ) ) {
+				statement.executeUpdate(requeteRouteInsert);
+			}
+			
+			//Pour afficher le contenu de la table route
+			try ( Statement statement = connection.createStatement() ) {
+				try ( ResultSet resultSet = statement.executeQuery( "SELECT * FROM route" ) ) {
+					System.out.println("route : ");
 					while( resultSet.next() ) {
+						System.out.println();
 						int origine = resultSet.getInt("origine");
 						int destination = resultSet.getInt("destination");
 
@@ -208,6 +243,7 @@ public class Entreprise {
 					}
 				}
 			}
+			
 			String requeteFloydW = "DROP TABLE FloydW IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteFloydW );
@@ -216,7 +252,7 @@ public class Entreprise {
 					+"origine int,"
 					+"destination int,"
 					+"distance int,"
-					+"PRIMARY KEY(rigine, destination))";
+					+"PRIMARY KEY(origine, destination))";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteFloydW );
 
@@ -233,7 +269,7 @@ public class Entreprise {
 	public int[][] Floyd() {
 		final int INF = Integer.MAX_VALUE / 2;
 		int n = sites.size();
-		int[][] M = new int[n][n];
+		int[][] M = new int[n+1][n+1];
 		//initialisation
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
