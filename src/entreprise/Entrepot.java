@@ -12,6 +12,8 @@ public class Entrepot {
 	@CsvBindByName(column = "stock")
 	private int stock;
 
+	public Entrepot() {} //Pour que OpenCSV fonctionne
+	
 	public Entrepot(int id_entrepot, int id_site, int cout_fixe, int stock) {
 		this.id_entrepot = id_entrepot;
 		this.id_site = id_site;

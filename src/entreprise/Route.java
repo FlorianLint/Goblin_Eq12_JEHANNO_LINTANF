@@ -8,6 +8,8 @@ public class Route {
 	@CsvBindByName(column = "destination")
 	private int destination;
 
+	public Route() {} //Pour que OpenCSV fonctionne
+	
 	public Route(int origine, int destination) {
 		this.origine = origine;
 		this.destination = destination;

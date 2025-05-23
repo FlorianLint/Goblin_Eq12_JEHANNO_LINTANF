@@ -10,6 +10,8 @@ public class Client {
 	@CsvBindByName(column = "nom")
 	private String nom;
 	
+	public Client() {} //Pour que OpenCSV fonctionne
+	
 	public Client(int id_site, String mail, String nom) {
 		this.id_site = id_site;
 		this.mail = mail;

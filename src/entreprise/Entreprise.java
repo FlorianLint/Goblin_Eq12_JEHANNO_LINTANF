@@ -14,66 +14,66 @@ public class Entreprise {
 	private int[][] distancesMin;
 
 	public Entreprise() {
-	    this.clients = new ArrayList<>();
-	    this.entrepots = new ArrayList<>();
-	    this.routes = new ArrayList<>();
-	    this.sites = new ArrayList<>();
+		this.clients = new ArrayList<>();
+		this.entrepots = new ArrayList<>();
+		this.routes = new ArrayList<>();
+		this.sites = new ArrayList<>();
 
-	    try {
-	        Class.forName("org.hsqldb.jdbcDriver");
-	        String url = "jdbc:hsqldb:file:database" + File.separator + "basic;shutdown=true";
-	        String login = "sa";
-	        String password = "";
+		try {
+			Class.forName("org.hsqldb.jdbcDriver");
+			String url = "jdbc:hsqldb:file:database" + File.separator + "basic;shutdown=true";
+			String login = "sa";
+			String password = "";
 
-	        try (Connection conn = DriverManager.getConnection(url, login, password)) {
+			try (Connection conn = DriverManager.getConnection(url, login, password)) {
 
-	            // Lire les sites
-	            Statement st = conn.createStatement();
-	            ResultSet rs = st.executeQuery("SELECT * FROM site");
-	            while (rs.next()) {
-	                Site s = new Site(rs.getInt("id_site"), rs.getInt("x"), rs.getInt("y"));
-	                this.sites.add(s);
-	            }
-	            rs.close();
+				// Lire les sites
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("SELECT * FROM site");
+				while (rs.next()) {
+					Site s = new Site(rs.getInt("id_site"), rs.getInt("x"), rs.getInt("y"));
+					this.sites.add(s);
+				}
+				rs.close();
 
-	            // Lire les clients
-	            rs = st.executeQuery("SELECT * FROM client");
-	            while (rs.next()) {
-	                Client c = new Client(rs.getInt("id_site"), rs.getString("mail"), rs.getString("nom"));
-	                this.clients.add(c);
-	            }
-	            rs.close();
+				// Lire les clients
+				rs = st.executeQuery("SELECT * FROM client");
+				while (rs.next()) {
+					Client c = new Client(rs.getInt("id_site"), rs.getString("mail"), rs.getString("nom"));
+					this.clients.add(c);
+				}
+				rs.close();
 
-	            // Lire les entrepôts
-	            rs = st.executeQuery("SELECT * FROM entrepot");
-	            while (rs.next()) {
-	                Entrepot e = new Entrepot(
-	                    rs.getInt("id_entrepot"),
-	                    rs.getInt("id_site"),
-	                    rs.getInt("cout_fixe"),
-	                    rs.getInt("stock")
-	                );
-	                this.entrepots.add(e);
-	            }
-	            rs.close();
+				// Lire les entrepôts
+				rs = st.executeQuery("SELECT * FROM entrepot");
+				while (rs.next()) {
+					Entrepot e = new Entrepot(
+							rs.getInt("id_entrepot"),
+							rs.getInt("id_site"),
+							rs.getInt("cout_fixe"),
+							rs.getInt("stock")
+							);
+					this.entrepots.add(e);
+				}
+				rs.close();
 
-	            // Lire les routes
-	            rs = st.executeQuery("SELECT * FROM route");
-	            while (rs.next()) {
-	                Route r = new Route(rs.getInt("origine"), rs.getInt("destination"));
-	                this.routes.add(r);
-	            }
+				// Lire les routes
+				rs = st.executeQuery("SELECT * FROM route");
+				while (rs.next()) {
+					Route r = new Route(rs.getInt("origine"), rs.getInt("destination"));
+					this.routes.add(r);
+				}
 
-	            rs.close();
-	            st.close();
-	        }
+				rs.close();
+				st.close();
+			}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-	    // Génère les distances après avoir lu les sites et routes
-	    this.distancesMin = Floyd();
+		// Génère les distances après avoir lu les sites et routes
+		this.distancesMin = Floyd();
 	}
 
 	public Entreprise(String dossier) {
