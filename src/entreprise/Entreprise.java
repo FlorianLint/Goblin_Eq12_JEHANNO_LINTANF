@@ -13,8 +13,9 @@ public class Entreprise {
 	private int[][] distancesMin;
 
 	public Entreprise() {//lecture de la BD pour initialiser les variables d'instances
-		
+
 	}
+
 	public Entreprise(String dossier) {
 		this.dossier = dossier;
 		String nomFichier = "";
@@ -43,27 +44,10 @@ public class Entreprise {
 			System.err.println(e);
 		}
 		//test affichage list
-		for (Client c : clients) {
-			System.out.println(c.getId_site());
-		}
+		//		for (Client c : clients) {
+		//			System.out.println(c.getId_site());
+		//		}
 		this.distancesMin = Floyd();
-	}
-	public String getDossier() {
-		return dossier;
-	}
-
-	public Site findSiteFromId(int id_site, List<Site> sites) {
-		for (int i = 0; i < sites.size(); i++) {
-			if (sites.get(i).getId_site() == id_site) {
-				return sites.get(i);
-			}
-		}
-		return null;
-	}
-
-	public int distance(Site site1, Site site2) {
-		double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
-		return (int) Math.ceil(dist);
 	}
 
 	public void BaseDonnees() throws Exception {
@@ -176,13 +160,13 @@ public class Entreprise {
 					+"PRIMARY KEY(rigine, destination))";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteFloydW );
-				
-			StringBuffer sFloydW = new StringBuffer ("INSERT INTO FloydW (origine, destination, distance) VALUES");
-			for (int i = 0; i<this.distancesMin.length; i++) {
-				for (int j = 0; j<this.distancesMin.length; j++) {
-				sFloydW.append("("+ i + "," + j + ","  + distancesMin[i][j] +")");
-			}
-			}
+
+				StringBuffer sFloydW = new StringBuffer ("INSERT INTO FloydW (origine, destination, distance) VALUES");
+				for (int i = 0; i<this.distancesMin.length; i++) {
+					for (int j = 0; j<this.distancesMin.length; j++) {
+						sFloydW.append("("+ i + "," + j + ","  + distancesMin[i][j] +")");
+					}
+				}
 			}
 		}
 	}
@@ -222,5 +206,23 @@ public class Entreprise {
 			}
 		}
 		return M; 
+	}
+
+	public String getDossier() {
+		return dossier;
+	}
+
+	public Site findSiteFromId(int id_site, List<Site> sites) {
+		for (int i = 0; i < sites.size(); i++) {
+			if (sites.get(i).getId_site() == id_site) {
+				return sites.get(i);
+			}
+		}
+		return null;
+	}
+
+	public int distance(Site site1, Site site2) {
+		double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
+		return (int) Math.ceil(dist);
 	}
 }

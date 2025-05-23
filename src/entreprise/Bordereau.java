@@ -126,7 +126,7 @@ public class Bordereau {
 
 			// Écriture JSON dans un fichier
 			Gson gson = new Gson();
-			FileWriter writer = new FileWriter("bordereau.json");
+			FileWriter writer = new FileWriter("Json"+ File.separator +"bordereau.json");
 			gson.toJson(json, writer);
 			writer.close();
 
