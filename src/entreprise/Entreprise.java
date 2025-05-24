@@ -117,6 +117,7 @@ public class Entreprise {
 		String password = "";
 		try (Connection connection=DriverManager.getConnection(url, login, password )){
 
+			//Création et remplissage table site
 			String requeteSite = "DROP TABLE site IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteSite );
@@ -144,7 +145,8 @@ public class Entreprise {
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteSiteInsert);
 			}
-
+			
+			//Création et remplissage table client
 			String requeteClient = "DROP TABLE client IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate( requeteClient );
@@ -161,8 +163,8 @@ public class Entreprise {
 			for (int i = 0; i<this.clients.size(); i++) {
 				Client client = this.clients.get(i);
 				sClient.append("("+ client.getId_site() +",");
-				sClient.append(client.getMail() +",");
-				sClient.append(client.getNom() +")");
+				sClient.append("'"+ client.getMail() +"',");
+				sClient.append("'"+ client.getNom() +"')");
 				if (i != this.clients.size()-1) { 
 					sClient.append(",");
 				}
@@ -173,18 +175,19 @@ public class Entreprise {
 				statement.executeUpdate(requeteClientInsert);
 			}
 
+			//Création et remplissage table entrepot
 			String requeteEntrepot = "DROP TABLE entrepot IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate( requeteEntrepot );
+				statement.executeUpdate(requeteEntrepot);
 			}
-			requeteClient = "CREATE TABLE entrepot ("
+			requeteEntrepot = "CREATE TABLE entrepot ("
 					+"id_entrepot int,"
 					+"id_site int,"
 					+"cout_fixe int,"
 					+"stock int,"
 					+"PRIMARY KEY(id_entrepot))";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate( requeteEntrepot );
+				statement.executeUpdate(requeteEntrepot);
 			}
 			StringBuffer sEntrepot = new StringBuffer ("INSERT INTO entrepot (id_entrepot, id_site, cout_fixe, stock) VALUES");
 			for (int i = 0; i<this.entrepots.size(); i++) {
@@ -203,16 +206,17 @@ public class Entreprise {
 				statement.executeUpdate(requeteEntrepotInsert);
 			}
 
+			//Création et remplissage table route
 			String requeteRoute = "DROP TABLE route IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate( requeteRoute );
+				statement.executeUpdate(requeteRoute);
 			}
 			requeteRoute = "CREATE TABLE route ("
 					+"origine int,"
 					+"destination int,"
 					+"PRIMARY KEY(origine, destination))";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate( requeteRoute );
+				statement.executeUpdate(requeteRoute);
 			}
 			StringBuffer sRoute = new StringBuffer ("INSERT INTO route (origine, destination) VALUES");
 			for (int i = 0; i<this.routes.size(); i++) {
@@ -246,7 +250,7 @@ public class Entreprise {
 			
 			String requeteFloydW = "DROP TABLE FloydW IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate( requeteFloydW );
+				statement.executeUpdate(requeteFloydW);
 			}
 			requeteFloydW = "CREATE TABLE FloydW ("
 					+"origine int,"
@@ -254,7 +258,7 @@ public class Entreprise {
 					+"distance int,"
 					+"PRIMARY KEY(origine, destination))";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate( requeteFloydW );
+				statement.executeUpdate(requeteFloydW);
 
 				StringBuffer sFloydW = new StringBuffer ("INSERT INTO FloydW (origine, destination, distance) VALUES");
 				for (int i = 0; i<this.distancesMin.length; i++) {
