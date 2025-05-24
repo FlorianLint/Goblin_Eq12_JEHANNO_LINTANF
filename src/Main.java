@@ -16,7 +16,7 @@ public class Main {
             b.toJson(); // génère bordereau.json
 
             // Exécution du script Python, en spécifiant le fichier de sortie directement dans le bon dossier
-            ProcessBuilder pb = new ProcessBuilder("python", "SSCFLP.py", "bordereau.json", "Json/resultat.json");
+            ProcessBuilder pb = new ProcessBuilder("python", "src"+ File.separator +"SSCFLP.py", "Json"+ File.separator +"bordereau.json", "Json"+ File.separator +"resultat.json");
             pb.redirectErrorStream(true);
             Process process = pb.start();
 

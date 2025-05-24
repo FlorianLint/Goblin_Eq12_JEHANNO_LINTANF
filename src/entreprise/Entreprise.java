@@ -24,7 +24,6 @@ public class Entreprise {
 			String url = "jdbc:hsqldb:file:database" + File.separator + "basic;shutdown=true";
 			String login = "sa";
 			String password = "";
-
 			try (Connection conn = DriverManager.getConnection(url, login, password)) {
 
 				// Lire les sites
@@ -63,15 +62,14 @@ public class Entreprise {
 					Route r = new Route(rs.getInt("origine"), rs.getInt("destination"));
 					this.routes.add(r);
 				}
-
 				rs.close();
 				st.close();
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		//A MODIFIER
 		// Génère les distances après avoir lu les sites et routes
 		this.distancesMin = Floyd();
 	}
@@ -103,9 +101,9 @@ public class Entreprise {
 			System.err.println(e);
 		}
 		//test affichage list
-//		for (Route r : routes) {
-//			System.out.println(r.getDestination());
-//		}
+		//		for (Route r : routes) {
+		//			System.out.println(r.getDestination());
+		//		}
 		this.distancesMin = Floyd();
 	}
 
@@ -145,7 +143,7 @@ public class Entreprise {
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteSiteInsert);
 			}
-			
+
 			//Création et remplissage table client
 			String requeteClient = "DROP TABLE client IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
@@ -232,7 +230,7 @@ public class Entreprise {
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteRouteInsert);
 			}
-			
+
 			//Pour afficher le contenu de la table route
 			try ( Statement statement = connection.createStatement() ) {
 				try ( ResultSet resultSet = statement.executeQuery( "SELECT * FROM route" ) ) {
@@ -247,7 +245,7 @@ public class Entreprise {
 					}
 				}
 			}
-			
+
 			String requeteFloydW = "DROP TABLE FloydW IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteFloydW);
@@ -266,6 +264,16 @@ public class Entreprise {
 						sFloydW.append("("+ i + "," + j + ","  + distancesMin[i][j] +")");
 					}
 				}
+			}
+			String jeuxDeDonnees = "DROP TABLE jeuxDeDonnees IF EXISTS;";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(jeuxDeDonnees);
+			}
+			String requeteJeuxDeDonnees = "CREATE TABLE jeuxDeDonnees ("
+					+"taille VARCHAR(100),"
+					+"PRIMARY KEY(taille)";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(requeteJeuxDeDonnees);
 			}
 		}
 	}

@@ -14,9 +14,14 @@ public class Bordereau {
 		String nomFichier = "";
 		try {
 			String dossier = e.getDossier();
+			System.out.println("dossier : "+ dossier); // voir dossier
 			File f = new File("Jeux_de_donnees" + File.separator + dossier);
 			System.out.println(f.listFiles().length);
 			for (File ff : f.listFiles()) {
+				
+				System.out.println("Fichier trouvé : " + ff.getAbsolutePath());
+				System.out.println("Je cherche : " + FchTxt);
+
 				nomFichier = ff.getName();
 				if (ff.getAbsolutePath().contains(FchTxt)) {
 					BufferedReader reader = new BufferedReader(new FileReader(ff));
@@ -127,6 +132,16 @@ public class Bordereau {
 			// Écriture JSON dans un fichier
 			Gson gson = new Gson();
 			FileWriter writer = new FileWriter("Json"+ File.separator +"bordereau.json");
+			
+//			//pour voir le contenue des listes
+//			System.out.println("Données JSON à écrire :");
+//			System.out.println("Capacités : " + json.capacity_facility);
+//			System.out.println("Coûts fixes : " + json.fixed_cost_facility);
+//			System.out.println("Demandes clients : " + json.demand_customer);
+//			System.out.println("Matrice des coûts : " + json.cost_matrix);
+//			System.out.println("Nombre d'entrepôts : " + json.num_facility_locations);
+//			System.out.println("Nombre de clients : " + json.num_customers);
+			
 			gson.toJson(json, writer);
 			writer.close();
 
