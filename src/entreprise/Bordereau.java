@@ -16,11 +16,11 @@ public class Bordereau {
 			String dossier = e.getDossier();
 			System.out.println("dossier : "+ dossier); // voir dossier
 			File f = new File("Jeux_de_donnees" + File.separator + dossier);
-			System.out.println(f.listFiles().length);
 			for (File ff : f.listFiles()) {
 				
-				System.out.println("Fichier trouvé : " + ff.getAbsolutePath());
-				System.out.println("Je cherche : " + FchTxt);
+				//debugage
+//				System.out.println("Fichier trouvé : " + ff.getAbsolutePath());
+//				System.out.println("Je cherche : " + FchTxt);
 
 				nomFichier = ff.getName();
 				if (ff.getAbsolutePath().contains(FchTxt)) {

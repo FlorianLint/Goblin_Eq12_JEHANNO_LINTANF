@@ -26,9 +26,16 @@ public class Entreprise {
 			String password = "";
 			try (Connection conn = DriverManager.getConnection(url, login, password)) {
 
-				// Lire les sites
+				// Lire le jeux de données
 				Statement st = conn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM site");
+				ResultSet rs = st.executeQuery("SELECT * FROM jeuxDeDonnees");
+				if(rs.next()) {
+					dossier = rs.getString("taille");
+				}
+				rs.close();
+
+				// Lire les sites
+				rs = st.executeQuery("SELECT * FROM site");
 				while (rs.next()) {
 					Site s = new Site(rs.getInt("id_site"), rs.getInt("x"), rs.getInt("y"));
 					this.sites.add(s);
@@ -231,21 +238,7 @@ public class Entreprise {
 				statement.executeUpdate(requeteRouteInsert);
 			}
 
-			//Pour afficher le contenu de la table route
-			try ( Statement statement = connection.createStatement() ) {
-				try ( ResultSet resultSet = statement.executeQuery( "SELECT * FROM route" ) ) {
-					System.out.println("route : ");
-					while( resultSet.next() ) {
-						System.out.println();
-						int origine = resultSet.getInt("origine");
-						int destination = resultSet.getInt("destination");
-
-						System.out.println(String.format("Origine: %-5d | Destination: %-5d ", 
-								origine, destination));
-					}
-				}
-			}
-
+			//Creation et remplisssage de la table FloydW
 			String requeteFloydW = "DROP TABLE FloydW IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteFloydW);
@@ -262,18 +255,45 @@ public class Entreprise {
 				for (int i = 0; i<this.distancesMin.length; i++) {
 					for (int j = 0; j<this.distancesMin.length; j++) {
 						sFloydW.append("("+ i + "," + j + ","  + distancesMin[i][j] +")");
+						if (i != this.distancesMin.length-1) { 
+							sFloydW.append(",");
+						}
 					}
 				}
 			}
+
+			//Creation et remplissage de la table jeuxDeDonnees
 			String jeuxDeDonnees = "DROP TABLE jeuxDeDonnees IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(jeuxDeDonnees);
 			}
-			String requeteJeuxDeDonnees = "CREATE TABLE jeuxDeDonnees ("
+
+			jeuxDeDonnees = "CREATE TABLE jeuxDeDonnees ("
 					+"taille VARCHAR(100),"
-					+"PRIMARY KEY(taille)";
+					+"PRIMARY KEY(taille))";
 			try ( Statement statement = connection.createStatement() ) {
-				statement.executeUpdate(requeteJeuxDeDonnees);
+				statement.executeUpdate(jeuxDeDonnees);
+			}
+
+			String insertJeuxDeDonnees = "INSERT INTO jeuxDeDonnees (taille) VALUES"
+					+"('"+ dossier +"')";
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(insertJeuxDeDonnees);
+			}
+
+			//Pour afficher le contenu de la table route
+			try ( Statement statement = connection.createStatement() ) {
+				try ( ResultSet resultSet = statement.executeQuery( "SELECT * FROM route" ) ) {
+					System.out.println("route : ");
+					while( resultSet.next() ) {
+						System.out.println();
+						int origine = resultSet.getInt("origine");
+						int destination = resultSet.getInt("destination");
+
+						System.out.println(String.format("Origine: %-5d | Destination: %-5d ", 
+								origine, destination));
+					}
+				}
 			}
 		}
 	}
