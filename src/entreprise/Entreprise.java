@@ -254,7 +254,7 @@ public class Entreprise {
 				statement.executeUpdate(requeteRouteInsert);
 			}
 
-			//Creation et remplisssage de la table FloydW
+			//Creation et remplissage de la table FloydW
 			String requeteFloydW = "DROP TABLE FloydW IF EXISTS;";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteFloydW);
@@ -266,16 +266,19 @@ public class Entreprise {
 					+"PRIMARY KEY(origine, destination))";
 			try ( Statement statement = connection.createStatement() ) {
 				statement.executeUpdate(requeteFloydW);
-
+			}
 				StringBuffer sFloydW = new StringBuffer ("INSERT INTO FloydW (origine, destination, distance) VALUES");
 				for (int i = 0; i<this.distancesMin.length; i++) {
 					for (int j = 0; j<this.distancesMin.length; j++) {
 						sFloydW.append("("+ i + "," + j + ","  + distancesMin[i][j] +")");
-						if (i != this.distancesMin.length-1) { 
+						if (!(i == this.distancesMin.length-1 && j == this.distancesMin.length-1)) { 
 							sFloydW.append(",");
 						}
 					}
 				}
+			String requeteFloydWInsert = sFloydW.toString();
+			try ( Statement statement = connection.createStatement() ) {
+				statement.executeUpdate(requeteFloydWInsert);
 			}
 
 			//Creation et remplissage de la table jeuxDeDonnees
@@ -319,12 +322,12 @@ public class Entreprise {
 		int n = sites.size();
 		int[][] M = new int[n+1][n+1];
 		//initialisation
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
+		for (int i = 0; i <=n; i++) {
+			for (int j = 0; j <= n; j++) {
 				if (i == j) {
 					M[i][j] = 0;
 				} else {
-					M[i][j] = INF;
+					M[i][j] = 10000;
 				}
 			}
 		}
@@ -339,9 +342,13 @@ public class Entreprise {
 		}
 		//Déroulement de l'algorithme
 		int k = 0;
-		for (k=0; k<n; k++); {
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
+		for (k=1; k<=n; k++) {
+			for (int i = 1; i <= n; i++) {
+				for (int j = 1; j <= n; j++) {
+					if (i==j)continue;
+					int a = M[i][k];
+					int b = M[k][j];
+					int d = M[i][j];
 					if (M[i][k] + M[k][j] < M[i][j]) {
 						M[i][j] = M[i][k] + M[k][j];
 					}
@@ -370,7 +377,7 @@ public class Entreprise {
 	}
 	
 	private int indexFromId(int id_site) {
-	    for (int i = 0; i < sites.size(); i++) {
+	    for (int i = 1; i < sites.size(); i++) {
 	        if (sites.get(i).getId_site() == id_site) {
 	            return i;
 	        }

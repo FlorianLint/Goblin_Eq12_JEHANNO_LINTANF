@@ -1,6 +1,13 @@
 {
-    "status": "Infeasible",
-    "openfacilities": [],
-    "deliveriesfor_customer": [],
-    "objective": 0.0
+    "status": "Optimal",
+    "openfacilities": [
+        1,
+        2
+    ],
+    "deliveriesfor_customer": [
+        2,
+        1,
+        1
+    ],
+    "objective": 1337.0
 }
