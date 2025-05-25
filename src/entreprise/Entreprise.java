@@ -3,6 +3,7 @@ package entreprise;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Entreprise {
@@ -70,15 +71,30 @@ public class Entreprise {
 					this.routes.add(r);
 				}
 				rs.close();
+				
+				// lire les distancesMin
+				int n = sites.size();
+				this.distancesMin = new int[n][n];
+				final int INF = Integer.MAX_VALUE / 2;
+				for (int i = 0; i < n; i++) {
+				    Arrays.fill(this.distancesMin[i], INF);
+				    this.distancesMin[i][i] = 0;
+				}
+				rs = st.executeQuery("SELECT * FROM FloydW");
+				while (rs.next()) {
+				    int origine = rs.getInt("origine");
+				    int destination = rs.getInt("destination");
+				    int distance = rs.getInt("distance");
+				    int i = indexFromId(origine);
+				    int j = indexFromId(destination);
+				    this.distancesMin[i][j] = distance;
+				}
+				rs.close();
 				st.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		//A MODIFIER
-		// Génère les distances après avoir lu les sites et routes
-		this.distancesMin = Floyd();
 	}
 
 	public Entreprise(String dossier) {
@@ -351,5 +367,14 @@ public class Entreprise {
 	public int distance(Site site1, Site site2) {
 		double dist = Math.sqrt(Math.pow(site1.getX() - site2.getX(), 2) + Math.pow(site1.getY() - site2.getY(), 2));
 		return (int) Math.ceil(dist);
+	}
+	
+	private int indexFromId(int id_site) {
+	    for (int i = 0; i < sites.size(); i++) {
+	        if (sites.get(i).getId_site() == id_site) {
+	            return i;
+	        }
+	    }
+	    throw new IllegalArgumentException("Site non trouvé : " + id_site);
 	}
 }

@@ -18,7 +18,7 @@ public class Bordereau {
 			File f = new File("Jeux_de_donnees" + File.separator + dossier);
 			for (File ff : f.listFiles()) {
 				
-				//debugage
+//				//debugage
 //				System.out.println("Fichier trouvé : " + ff.getAbsolutePath());
 //				System.out.println("Je cherche : " + FchTxt);
 
