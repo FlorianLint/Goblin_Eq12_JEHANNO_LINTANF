@@ -301,19 +301,19 @@ public class Entreprise {
 			}
 
 			//Pour afficher le contenu de la table route
-			try ( Statement statement = connection.createStatement() ) {
-				try ( ResultSet resultSet = statement.executeQuery( "SELECT * FROM route" ) ) {
-					System.out.println("route : ");
-					while( resultSet.next() ) {
-						System.out.println();
-						int origine = resultSet.getInt("origine");
-						int destination = resultSet.getInt("destination");
-
-						System.out.println(String.format("Origine: %-5d | Destination: %-5d ", 
-								origine, destination));
-					}
-				}
-			}
+//			try ( Statement statement = connection.createStatement() ) {
+//				try ( ResultSet resultSet = statement.executeQuery( "SELECT * FROM route" ) ) {
+//					System.out.println("route : ");
+//					while( resultSet.next() ) {
+//						System.out.println();
+//						int origine = resultSet.getInt("origine");
+//						int destination = resultSet.getInt("destination");
+//
+//						System.out.println(String.format("Origine: %-5d | Destination: %-5d ", 
+//								origine, destination));
+//					}
+//				}
+//			}
 		}
 	}
 
@@ -346,9 +346,6 @@ public class Entreprise {
 			for (int i = 1; i <= n; i++) {
 				for (int j = 1; j <= n; j++) {
 					if (i==j)continue;
-					int a = M[i][k];
-					int b = M[k][j];
-					int d = M[i][j];
 					if (M[i][k] + M[k][j] < M[i][j]) {
 						M[i][j] = M[i][k] + M[k][j];
 					}
