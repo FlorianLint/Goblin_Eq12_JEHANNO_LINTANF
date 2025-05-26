@@ -18,5 +18,6 @@ public class Migration {
          ex.printStackTrace();
      }
 	scanner.close(); 
+	System.out.println("Migration terminé !");
 	}
 }

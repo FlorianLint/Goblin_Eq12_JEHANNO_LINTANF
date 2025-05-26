@@ -155,5 +155,6 @@ public class Bordereau {
 				ex.printStackTrace();
 			}
 		}
+		System.out.println("Fichier JSON bordereau.json écrit !");
 	}
 }

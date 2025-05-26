@@ -1,13 +1,34 @@
 {
     "status": "Optimal",
     "openfacilities": [
-        1,
-        2
+        0,
+        2,
+        3,
+        5,
+        6,
+        7
     ],
     "deliveriesfor_customer": [
+        3,
+        3,
+        7,
         2,
-        1,
-        1
+        7,
+        7,
+        7,
+        7,
+        5,
+        0,
+        3,
+        6,
+        3,
+        3,
+        5,
+        7,
+        5,
+        0,
+        5,
+        5
     ],
-    "objective": 1337.0
+    "objective": 8552.0
 }
