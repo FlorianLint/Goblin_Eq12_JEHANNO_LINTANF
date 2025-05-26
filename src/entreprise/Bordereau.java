@@ -10,6 +10,7 @@ public class Bordereau {
 	private List<Integer> demandes = new ArrayList<>();
 	private List<Integer> entrepotIds = new ArrayList<>();
 
+	//Transforme le bordereau en list
 	public Bordereau(Entreprise e, String FchTxt) {
 		String nomFichier = "";
 		try {
@@ -53,11 +54,11 @@ public class Bordereau {
 		}
 	}
 
+	//Utilise les list et la database pour créer le Json
 	public void toJson() {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:hsqldb:file:database"+File.separator+"basic", "sa", "");
-
 			JsonExport json = new JsonExport();
 			json.capacity_facility = new ArrayList<>();
 			json.fixed_cost_facility = new ArrayList<>();
@@ -111,9 +112,9 @@ public class Bordereau {
 							ResultSet rsDist = psDist.executeQuery();
 							if (rsDist.next()) {
 								int distance = rsDist.getInt("distance");
-								ligne.add((double) distance); // coût = distance (int to double)
+								ligne.add((double) distance);
 							} else {
-								ligne.add(Double.MAX_VALUE); // distance inconnue
+								ligne.add(Double.MAX_VALUE);
 							}
 							rsDist.close();
 							psDist.close();
@@ -145,7 +146,6 @@ public class Bordereau {
 			gson.toJson(json, writer);
 			writer.close();
 
-			System.out.println("Fichier JSON écrit avec succès !");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

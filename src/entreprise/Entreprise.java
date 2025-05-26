@@ -14,6 +14,7 @@ public class Entreprise {
 	private String dossier;
 	private int[][] distancesMin;
 
+	//Pour initialiser entreprise à partir de la base de données
 	public Entreprise() {
 		this.clients = new ArrayList<>();
 		this.entrepots = new ArrayList<>();
@@ -97,6 +98,7 @@ public class Entreprise {
 		}
 	}
 
+	//Pour Créer l'entreprise à partir du choix d'entreprise (petit, moyen, grand)
 	public Entreprise(String dossier) {
 		this.dossier = dossier;
 		String nomFichier = "";
@@ -308,7 +310,6 @@ public class Entreprise {
 //						System.out.println();
 //						int origine = resultSet.getInt("origine");
 //						int destination = resultSet.getInt("destination");
-//
 //						System.out.println(String.format("Origine: %-5d | Destination: %-5d ", 
 //								origine, destination));
 //					}
@@ -318,7 +319,6 @@ public class Entreprise {
 	}
 
 	public int[][] Floyd() {
-		final int INF = Integer.MAX_VALUE / 2;
 		int n = sites.size();
 		int[][] M = new int[n+1][n+1];
 		//initialisation
@@ -359,6 +359,7 @@ public class Entreprise {
 		return dossier;
 	}
 
+	//Permet de lier un id_site à un objet Site
 	public Site findSiteFromId(int id_site, List<Site> sites) {
 		for (int i = 0; i < sites.size(); i++) {
 			if (sites.get(i).getId_site() == id_site) {
@@ -373,12 +374,13 @@ public class Entreprise {
 		return (int) Math.ceil(dist);
 	}
 	
-	private int indexFromId(int id_site) {
+	//Pour transformer les id_site en un index car il peut y avoir des sauts entre les numéros de site et plusieurs fois le même site de suite
+	public int indexFromId(int id_site) {
 	    for (int i = 1; i < sites.size(); i++) {
 	        if (sites.get(i).getId_site() == id_site) {
 	            return i;
 	        }
 	    }
-	    throw new IllegalArgumentException("Site non trouvé : " + id_site);
+	    return 0;
 	}
 }
