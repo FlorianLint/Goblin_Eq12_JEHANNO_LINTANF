@@ -1,0 +1,8 @@
+=== Résultat de l'optimisation ===
+Statut : Optimal
+Objectif : 1337.0
+Entrepôts ouverts : [1, 2]
+Livraisons :
+Le client 1 est livré par l'entrepôt 2
+Le client 2 est livré par l'entrepôt 1
+Le client 3 est livré par l'entrepôt 1
