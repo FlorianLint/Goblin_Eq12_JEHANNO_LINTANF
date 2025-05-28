@@ -13,9 +13,10 @@ public class Main {
             String date = scanner.nextLine();
             scanner.close();
 
-            //Pour empécher des bugs
+            //On efface les fichiers pour empécher des bugs
             new File("Json"+ File.separator +"bordereau.json").delete();
             new File("Json"+ File.separator +"resultat.json").delete();
+            new File("Json" + File.separator + "resultat-" + date + ".txt").delete();
             
             Entreprise e = new Entreprise();
             Bordereau b = new Bordereau(e, date);
